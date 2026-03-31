@@ -1,0 +1,440 @@
+:: StoryTitle
+Narrative Game
+
+
+:: StoryData
+{
+  "ifid": "B4B16748-32DF-41C8-B5A6-DE47B6AFDB81",
+  "format": "Snowman",
+  "format-version": "2.1.1",
+  "start": "Title",
+  "zoom": 0.6
+}
+
+
+:: BrambleEvent {"position":"1700,1400","size":"100,100"}
+You notice a matchstick deep within a cluster of thorny brush.<br>
+<br>
+You're not sure if you can reach it unscathed, but the match could prove useful.
+
+<div class="options">
+[[Reach for the match-><%= chance("BrambleEventFail", "BrambleEventSuccess", 3) %>]]<br>
+[[Leave it->BrambleEventLeave]]
+</div>
+
+
+:: BrambleEventFail {"position":"1700,1200","size":"100,100"}
+<% damage(1) %>
+You reach for the match, but you hesitate and the thorns cut a gash in your arm.<br>
+<br>
+You get the match, but at a cost.<br>
+<br>
+<%= dyingDead(
+"You're able to walk just fine, but you're a bit worse for wear.",
+"As you walk away you begin to feel lightheaded.<br><br>You fall to the ground with a thud."
+) %>
+
+<div class="options">
+<%= dyingDead(
+"[[Continue onwards->StepUp]]",
+"[[Pass out->GameOver]]"
+) %>
+</div>
+
+
+:: BrambleEventLeave {"position":"1950,1200","size":"100,100"}
+You leave the match alone.<br>
+<br>
+Not much worth the risk, you think.
+
+<div class="options">
+[[Continue onwards->StepUp]]
+</div>
+
+
+:: BrambleEventSuccess {"position":"1825,1200","size":"100,100"}
+You manage to get the match without so much as a scratch.<br>
+<br>
+You gained +1 match.
+
+<div class="options">
+[[Continue onwards->StepUp]]
+</div>
+
+
+:: CampfireEvent {"position":"1000,1400","size":"100,100"}
+You see an unlit campfire slightly off the path.<br>
+<br>
+You think you might be able to light it if you had some kindling.
+
+<div class="options">
+<%= returnIfMatches("[[Light the campfire with a match->CampfireEventLight]]<br>") %>
+[[Keep walking->CampfireEventLeave]]
+</div>
+
+
+:: CampfireEventLeave {"position":"1125,1200","size":"100,100"}
+You pass the ashen campfire and continue onward.
+
+<div class="options">
+[[Keep walking->StepUp]]
+</div>
+
+
+:: CampfireEventLight {"position":"1000,1200","size":"100,100"}
+<%
+	window.story.state.health++;
+    window.story.state.matches--;
+%>
+You successfully light the campfire with a match.<br>
+<br>
+The match is completely burnt out and rendered useless.<br>
+<br>
+You stay a while at the lit campfire. When you get back up, you feel envigorated.
+
+<div class="options">
+[[Keep walking->StepUp]]
+</div>
+
+
+:: Credits {"position":"1100,400","size":"100,100"}
+# Credits
+Designed, programmed, and written by Caleb S.<br>
+Created with Twine by Chris Kilmas<br>
+Created with Snowman story format by Dan Cox
+
+<div class="options">
+[[Return to title->Title]]
+<div>
+
+
+:: Ending1 {"position":"1300,400","size":"100,100"}
+You see what looks like a small cabin in the distance.
+
+<div class="options">
+[[Move closer->Ending2]]
+</div>
+
+
+:: Ending2 {"position":"1300,550","size":"100,100"}
+You approach the cabin<br>
+<br>
+The door is open and a warm, inviting aura eminates from inside. Could this be the end of your journey?
+
+<div class="options">
+[[Go inside->Ending3]]
+</div>
+
+
+:: Ending3 {"position":"1300,700","size":"100,100"}
+# The End
+<br>
+Congratulations!<br>
+<br>
+You have completed A Walk in the Dark!<br>
+
+<div class="options">
+[[Return to title->Title]]
+<div>
+
+
+:: GameOver {"position":"1100,700","size":"100,100"}
+# GAME OVER
+
+<div class="options">
+[[Return to title->Title]]
+</div>
+
+
+:: Intro1 {"position":"900,600","size":"100,100"}
+<% init() %>
+The sound of the wind startles you awake.<br>
+<br>
+<div class="options">
+[[Examine your surroundings->Intro2]]<br>
+</div>
+
+
+:: Intro2 {"position":"900,800","size":"100,100"}
+The wind bellows, then becomes low. It's too dark to see anything at first, but your eyes slowly adjust.<br>
+<br>
+You awoke in the dead of night in a dense forest. You can see a path stretching out into the darkness.
+
+<div class="options">
+[[Start Walking->StepUp]]
+</div>
+
+
+:: MatchEvent {"position":"700,1400","size":"100,100"}
+You see a lone match lying on the path in front of you.
+
+<div class="options">
+[[Take the match->MatchEventTake]]<br>
+[[Leave the match->MatchEventLeave]]
+</div>
+
+
+:: MatchEventLeave {"position":"825,1200","size":"100,100"}
+You pass the match and continue onward.<br>
+<br>
+You wonder what it was doing there, but there's no time to turn back.
+
+<div class="options">
+[[Keep walking->StepUp]]
+</div>
+
+
+:: MatchEventTake {"position":"700,1200","size":"100,100"}
+<% window.story.state.matches++ %>
+You take the match from the ground.<br>
+<br>
+You gained +1 match. Perhaps this will be useful.
+
+<div class="options">
+[[Keep walking->StepUp]]
+</div>
+
+
+:: ReadMe {"position":"1100,200","size":"100,100"}
+This game was made for a college course in 2 weeks. Certain features may not work as intended. Please contact the developer if anything out of the ordinary happens.<br>
+<br>
+If you are playing in a browser, please do not use the page forward or page backward buttons, as using these may result in unintended consequences.<br>
+<br>
+Most importantly, make sure to have fun!
+
+<div class="options">
+[[Return to title->Title]]
+</div>
+
+
+:: StepUp {"position":"900,1000","size":"100,100"}
+You take a step forward.<br>
+<br>
+<%= window.story.state.step + 1 %><br>
+<br>
+<%= stepup() %>
+
+
+:: TestEvent {"position":"700,1000","size":"100,100"}
+WOW
+
+<div class="options">
+[[Its over now->StepUp]]
+</div>
+
+
+:: Title {"position":"900,400","size":"100,100"}
+# A Walk in the Dark
+Version 1.0.1
+<div class="options">
+[[Begin->Intro1]]<br>
+[[Developer Notes->ReadMe]]<br>
+[[Credits]]
+</div>
+
+
+:: WendigoEvent {"position":"1300,1400","size":"100,100"}
+A tall monstrous creature appears before you.<br>
+<br>
+Its glowing red eyes stare you down through its skull-like head.<br>
+<br>
+It looks hungry.
+
+<div class="options">
+[[Try to maneuver around it-><%= chance("WendigoEventFail", "WendigoEventSuccess", 2) %>]]<br>
+<%= returnIfMatches("[[Use a match->WendigoEventMatch]]") %>
+</div>
+
+
+:: WendigoEventFail {"position":"1300,1200","size":"100,100"}
+<% damage(1) %>
+As you run past it you feel a sharp pain in your side.<br>
+<br>
+You manage to escape, but when you look down you notice blood trickling from your shirt.<br>
+<br>
+<%= dyingDead(
+"You are still alive, for now.",
+"You begin to feel lightheaded and fall to the ground."
+) %>
+
+<div class=options>
+<%= dyingDead(
+"[[Continue onwards->StepUp]]",
+"[[Pass out->GameOver]]"
+) %>
+</div>
+
+
+:: WendigoEventMatch {"position":"1550,1200","size":"100,100"}
+<% window.story.state.matches-- %>
+You light a match.<br>
+<br>
+The creature screeches and runs off. It seems the fire scared it away.<br>
+<br>
+The match burns out and is rendered unusable.
+
+<div class="options">
+[[Continue onwards->StepUp]]
+</div>
+
+
+:: WendigoEventSuccess {"position":"1425,1200","size":"100,100"}
+You deftly maneuver to avoid the sharp claws of the terrible creature.<br>
+<br>
+With the creature long behind you, you stop a moment to catch your breath.
+
+<div class="options">
+[[Continue onwards->StepUp]]
+</div>
+
+
+:: StoryScript [script]
+window.story.state = { // Object storing global variables
+  // CONSTANTS
+  events: [ // Array of events that can occur
+    /*{
+      passageLink: "Something->TestEvent",
+      html: 'Test event occurs!'
+    }*/
+    {
+      passageLink: "Investigate->MatchEvent",
+      html: "You see something lying on the path."
+    },
+    {
+      passageLink: "Investigate->CampfireEvent",
+      html: "You see something off in the distance."
+    },
+    {
+      passageLink: "Investigate->WendigoEvent",
+      html: "You see something off in the distance."
+    },
+    {
+      passageLink: "Investigate->BrambleEvent",
+      html: "You notice something a bit off the path."
+    }
+  ],
+  eventFreq: {min: 5, max: 7}, // Min and max steps between events
+  dist: 40, // Length of game in steps
+  
+  // VARIABLES
+  step: 0,
+  run: [], // Array contains all events that will occur in this session
+  health: 2,
+  matches: 0 // Number of matches held by player
+};
+
+function init() { // Function runs when Intro1 is shown, typically after Title.
+  console.log("Init game");
+  window.story.state.step = 0;
+  window.story.state.run = [];
+  window.story.state.health = 2;
+  window.story.state.matches = 0;
+  
+  // Place events
+  window.story.state.run = genEvents();
+};
+
+function genEvents() { // Return events list based on params.
+  let length = window.story.state.dist;
+  let min = window.story.state.eventFreq.min;
+  let max = window.story.state.eventFreq.max;
+  
+  let i = 0;
+  let events = new Array(length);
+  
+  while (i < length) {
+    if (i != 0) {
+      events[i] = window.story.state.events[randInt(0, window.story.state.events.length - 1)];
+    }
+    
+    i += randInt(min, max);
+  }
+  
+  events[length - 1] = {
+  	passageLink: "Walk closer->Ending1",
+    html: "You see something off in the distance."
+  }
+  
+  console.log(events);
+  
+  return events;
+}
+
+function randInt(min, max) { // Returns random integer between min (inclusive) and max (inclusive)
+	return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+function stepup() { // Function runs when passage StepUp is shown. Returns HTML to be shown after generic step up text.
+  window.story.state.step += 1 // Increment step
+  
+  console.log(window.story.state.run[window.story.state.step]);
+  
+  let event = window.story.state.run[window.story.state.step]
+  
+  if (event != null) {
+  	// Return event-specific HTML
+    return event.html + '<div class="options">[[' + event.passageLink + ']]</div>';
+  }
+  
+  return '<div class="options">[[Take another step->StepUp]]</div>'; // Default HTML to keep walking
+};
+
+function returnIfMatches(html) {
+  if (window.story.state.matches == 0) {
+    return "";
+  };
+  
+  return html;
+};
+
+function damage(x) { // Inflicts damage to player. Also handles GameOver initiation.
+  window.story.state.health -= x
+  /*if (window.story.state.health == 0) {
+    console.log("Moving to GameOver");
+    window.story.show("GameOver");
+  };*/
+};
+
+function dyingDead(a, b) { // Returns b if health = 0, otherwise a
+  if (window.story.state.health == 0)
+    return b;
+  return a;
+}
+
+function chance(a, b, x) { // Returns a 1 out of x times
+  if (randInt(1, x) == 1)
+    return a;
+  else
+    return b;
+}
+
+:: StoryStylesheet [stylesheet]
+body {
+  font-family: "Courier New", monospace;
+  background-color: black;
+  color: white;
+  left: 5%;
+  top: 5%;
+  position: fixed;
+}
+
+tw-passage {
+  width: 90vw
+}
+
+div.options {
+  bottom: 5%;
+  position: fixed;
+}
+
+a {
+  color: lightblue;
+  text-decoration-color: lightblue;
+  text-shadow: 0 0 8px #0099ff;
+}
+
+a:hover {
+  color: #406cff;
+  text-decoration-color: #406cff;
+  text-shadow: 0 0 16px #0099ff;
+}
